@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>CBTログ入力</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2em auto; padding: 0 1em; }
+    label { display: block; margin: 1.5em 0 0.5em; }
+    textarea, input[type="text"] { width: 100%; padding: 0.5em; font-size: 1em; }
+    button { margin-top: 1.5em; padding: 0.75em 1.5em; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h1>CBTログ入力</h1>
+  <form id="cbt-form">
+    <label>出来事<br>
+      <textarea name="event" placeholder="外部で起きた具体的な事象"></textarea>
+    </label>
+
+    <label>自動思考<br>
+      <textarea name="thought" placeholder="その瞬間に浮かんだ考え／言葉"></textarea>
+    </label>
+
+    <label>感情<br>
+      <input type="text" name="emotion" placeholder="[//罪悪感][//過集中]…">
+    </label>
+
+    <label>行動<br>
+      <textarea name="action" placeholder="実際にとった行動や態度"></textarea>
+    </label>
+
+    <label>結果<br>
+      <textarea name="result" placeholder="行動によって起こった現実の反応"></textarea>
+    </label>
+
+    <label>リフレーミング<br>
+      <textarea name="reframe" placeholder="他の見方・角度の解釈"></textarea>
+    </label>
+
+    <button type="submit">送信して Scrapbox へ</button>
+  </form>
+
+  <script>
+    document.getElementById('cbt-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const now = new Date();
+      const Y = now.getFullYear();
+      const M = String(now.getMonth()+1).padStart(2,'0');
+      const D = String(now.getDate()).padStart(2,'0');
+      const date = `${Y}/${M}/${D}`;
+      const title = encodeURIComponent(`${date}：CBT`);
+      const monthTag = `#${Y}/${M}`;
+      
+      const get = (name) => encodeURIComponent(this.elements[name].value || '');
+      
+      const bodyLines = [
+        `${date}：CBT`,
+        monthTag,
+        '',
+        '[- 出来事（外部で起きた具体的な事象）]',
+        this.elements.event.value,
+        '',
+        '[- 自動思考（その瞬間に浮かんだ考え／言葉）]',
+        this.elements.thought.value,
+        '',
+        '[- 感情]',
+        this.elements.emotion.value,
+        '',
+        '[- 行動（実際にとった行動や態度）]',
+        this.elements.action.value,
+        '',
+        '[- 結果（行動によって起こった現実の反応）]',
+        this.elements.result.value,
+        '',
+        '[- リフレーミング（他の見方があるとしたら？少し違う角度の解釈）]',
+        this.elements.reframe.value,
+        '',
+        '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o 💬]'
+      ];
+      
+      const body = encodeURIComponent(bodyLines.join('\n'));
+      const project = 'creategames'; // ← Scrapboxプロジェクト名に置き換え
+      const url = `https://scrapbox.io/${project}/${title}?body=${body}`;
+      
+      // リダイレクト
+      window.location.href = url;
+    });
+  </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>scrapboxCBT</title>
   <style>
-    /* ==== リセット & ベース ==== */
+    /* リセット & ベース */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #f9f9f9;
@@ -12,88 +12,70 @@
       font-family: 'Open Sans', system-ui, sans-serif;
       padding: 2rem;
     }
-    /* Google Fonts Open Sans */
     @font-face {
-      font-family: 'Open Sans';
-      font-style: normal;
-      font-weight: 400;
+      font-family: 'Open Sans'; font-style: normal; font-weight: 400;
       src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
     }
-
-    /* ==== フォームレイアウト ==== */
+    /* フォームレイアウト */
     form {
       width: 50%;
       min-width: 9rem;
       margin: 10% auto;
       background: #fff;
-      padding: 1rem;
+      padding: 1.5rem;
       border-radius: 0.5rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-size: 0.95em;
-      color: #555;
-    }
-    .hint {
-      display: block;
-      font-size: 0.85em;
-      color: #aaa;
-      margin-top: 0.25em;
-    }
-
-    textarea, input[type="text"] {
-      float: left;
+    /* テキスト入力 & テキストエリア */
+    textarea {
       width: 100%;
       margin: 0.5rem 0;
-      padding: 0.5rem 1rem;
+      padding: 1rem;
       border: none;
       border-radius: 0.3rem;
       background: #e5e5e5;
       color: #555;
-      font-size: 0.95em;
+      font-size: 1.1em;
+      line-height: 1.4;
       resize: vertical;
     }
-
-    /* ==== 感情チェックボックス (4×3グリッド) ==== */
+    textarea::placeholder {
+      color: #aaa;
+      font-size: 1em;
+    }
+    /* 感情チェック (4×3 グリッド, ラベル非表示) */
     .emotion-group {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem;
-      margin-top: 0.5rem;
+      column-gap: 0.5rem;
+      row-gap: 0.125rem;
+      margin: 0.5rem 0;
     }
-    .emotion-group input {
-      display: none;
-    }
+    .emotion-group input { display: none; }
     .emotion-group label {
-      font-size: 0.85em;
+      display: block;
+      width: 100%;
       padding: 0.4rem;
-      text-align: center;
       border: 1px solid #ccc;
       border-radius: 0.3rem;
       background: #fafafa;
       cursor: pointer;
-      white-space: nowrap;
+      text-indent: -9999px;
       overflow: hidden;
-      text-overflow: ellipsis;
       transition: background 0.2s, border-color 0.2s;
     }
     .emotion-group input:checked + label {
-      background: #84AD47; /* green */
+      background: #84AD47;
       border-color: #84AD47;
-      color: #fff;
     }
-
-    /* ==== 送信ボタン ==== */
+    /* 送信ボタン */
     button[type="submit"] {
       float: right;
       background: #84AD47;
       color: #fff;
       border: none;
       border-radius: 0.3rem;
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       font-size: 1em;
       cursor: pointer;
     }
@@ -105,34 +87,26 @@
 <body>
   <form id="cbt-form">
     <textarea name="event" rows="3" placeholder="出来事（外部で起きた具体的な事象）"></textarea>
-
     <textarea name="thought" rows="2" placeholder="自動思考（その瞬間に浮かんだ考え／言葉）"></textarea>
-
-    <laabel></laabel>
-    <div class="emotion-group">
-      <input type="checkbox" id="e1" name="emotion" value="[||制作完了]"><label for="e1">制作完了</label>
-      <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]"><label for="e2">原点回帰</label>
-      <input type="checkbox" id="e3" name="emotion" value="[||達成感]"><label for="e3">達成感</label>
-      <input type="checkbox" id="e4" name="emotion" value="[||感謝]"><label for="e4">感謝</label>
-      <input type="checkbox" id="e5" name="emotion" value="[||安心]"><label for="e5">安心</label>
-      <input type="checkbox" id="e6" name="emotion" value="[||過集中]"><label for="e6">過集中</label>
-      <input type="checkbox" id="e7" name="emotion" value="[::回避行動]"><label for="e7">回避行動</label>
-      <input type="checkbox" id="e8" name="emotion" value="[::罪悪感]"><label for="e8">罪悪感</label>
-      <input type="checkbox" id="e9" name="emotion" value="[::対人プレッシャー]"><label for="e9">対人プレッシャー</label>
-      <input type="checkbox" id="e10" name="emotion" value="[::フリーズ]"><label for="e10">フリーズ</label>
-      <input type="checkbox" id="e11" name="emotion" value="[::吸収期]"><label for="e11">吸収期</label>
-      <input type="checkbox" id="e12" name="emotion" value="[::心配]"><label for="e12">心配</label>
+    <div class="emotion-group" aria-label="感情（該当するものを複数選択）">
+      <input type="checkbox" id="e1" name="emotion" value="[||制作完了]"><label for="e1"></label>
+      <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]"><label for="e2"></label>
+      <input type="checkbox" id="e3" name="emotion" value="[||達成感]"><label for="e3"></label>
+      <input type="checkbox" id="e4" name="emotion" value="[||感謝]"><label for="e4"></label>
+      <input type="checkbox" id="e5" name="emotion" value="[||安心]"><label for="e5"></label>
+      <input type="checkbox" id="e6" name="emotion" value="[||過集中]"><label for="e6"></label>
+      <input type="checkbox" id="e7" name="emotion" value="[::回避行動]"><label for="e7"></label>
+      <input type="checkbox" id="e8" name="emotion" value="[::罪悪感]"><label for="e8"></label>
+      <input type="checkbox" id="e9" name="emotion" value="[::対人プレッシャー]"><label for="e9"></label>
+      <input type="checkbox" id="e10" name="emotion" value="[::フリーズ]"><label for="e10"></label>
+      <input type="checkbox" id="e11" name="emotion" value="[::吸収期]"><label for="e11"></label>
+      <input type="checkbox" id="e12" name="emotion" value="[::心配]"><label for="e12"></label>
     </div>
-    <label></label>
     <textarea name="action" rows="2" placeholder="行動（実際にとった行動や態度）"></textarea>
-
     <textarea name="result" rows="2" placeholder="結果（行動によって起こった現実の反応）"></textarea>
-
     <textarea name="reframe" rows="2" placeholder="リフレーミング（他の見方があるとしたら？）"></textarea>
-
     <button type="submit">送信</button>
   </form>
-
   <script>
     document.getElementById('cbt-form').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -140,29 +114,20 @@
       const date = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
       const title = encodeURIComponent(`${date}：CBT`);
       const project = 'creategames';
-
-      const emotions = Array.from(this.querySelectorAll('input[name="emotion"]:checked')).map(cb=>cb.value).join(' ');
+      const emotions = Array.from(this.querySelectorAll('input[name="emotion"]:checked'))
+        .map(cb => cb.value).join(' ');
       const lines = [
         `${date}：CBT`,
-        `#${date.slice(0,7)}`,
-        '',
-        '[- 出来事]', this.elements.event.value,
-        '',
-        '[- 自動思考]', this.elements.thought.value,
-        '',
-        '[- 感情]', emotions,
-        '',
-        '[- 行動]', this.elements.action.value,
-        '',
-        '[- 結果]', this.elements.result.value,
-        '',
-        '[- リフレーミング]', this.elements.reframe.value,
-        '',
-        '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]'
+        `#${date.slice(0,7)}`, '', '[- 出来事]', this.elements.event.value,
+        '', '[- 自動思考]', this.elements.thought.value,
+        '', '[- 感情]', emotions,
+        '', '[- 行動]', this.elements.action.value,
+        '', '[- 結果]', this.elements.result.value,
+        '', '[- リフレーミング]', this.elements.reframe.value,
+        '', '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]'
       ];
       window.location.href = `https://scrapbox.io/${project}/${title}?body=${encodeURIComponent(lines.join('\n'))}`;
     });
   </script>
 </body>
 </html>
-

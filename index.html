@@ -1,105 +1,186 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>scrapboxCBT</title>
-  <link rel="stylesheet" href="styles.css"><!-- 先ほどのCSSをここにリンク -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="application_wrapper">
-    <div class="create_account_screen">
-      <form id="cbt-form" class="create_account_form">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-10">
+  <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+    <form id="cbt-form" class="space-y-6">
+      <!-- 出来事 -->
+      <div>
+        <label for="event" class="block text-sm font-medium text-gray-700">
+          出来事（外部で起きた具体的な事象）
+        </label>
+        <textarea
+          id="event"
+          name="event"
+          rows="3"
+          placeholder="出来事を入力"
+          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        ></textarea>
+      </div>
 
-        <!-- 出来事 -->
-        <div class="input_group">
-          <textarea id="event" class="input" name="event" rows="3" required></textarea>
-          <label class="input_label" for="event">
-            <span class="label_text">出来事（外部で起きた具体的な事象）</span>
-          </label>
-        </div>
+      <!-- 自動思考 -->
+      <div>
+        <label for="thought" class="block text-sm font-medium text-gray-700">
+          自動思考（その瞬間に浮かんだ考え／言葉）
+        </label>
+        <textarea
+          id="thought"
+          name="thought"
+          rows="2"
+          placeholder="自動思考を入力"
+          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        ></textarea>
+      </div>
 
-        <!-- 自動思考 -->
-        <div class="input_group">
-          <textarea id="thought" class="input" name="thought" rows="2" required></textarea>
-          <label class="input_label" for="thought">
-            <span class="label_text">自動思考（その瞬間に浮かんだ考え／言葉）</span>
-          </label>
-        </div>
-
-        <!-- 感情チェックボックス -->
-        <div class="checkbox_group">
-          <span>感情（該当するものを複数選択）</span>
-          <div class="emotion-group">
-            <input type="checkbox" id="e1"  name="emotion" value="[||制作完了]">
-            <label for="e1">制作完了</label>
-            <input type="checkbox" id="e2"  name="emotion" value="[||原点回帰]">
-            <label for="e2">原点回帰</label>
-            <input type="checkbox" id="e3"  name="emotion" value="[||達成感]">
-            <label for="e3">達成感</label>
-            <input type="checkbox" id="e4"  name="emotion" value="[||感謝]">
-            <label for="e4">感謝</label>
-            <input type="checkbox" id="e5"  name="emotion" value="[||安心]">
-            <label for="e5">安心</label>
-            <input type="checkbox" id="e6"  name="emotion" value="[||過集中]">
-            <label for="e6">過集中</label>
-            <input type="checkbox" id="e7"  name="emotion" value="[::回避行動]">
-            <label for="e7">回避行動</label>
-            <input type="checkbox" id="e8"  name="emotion" value="[::罪悪感]">
-            <label for="e8">罪悪感</label>
-            <input type="checkbox" id="e9"  name="emotion" value="[::対人プレッシャー]">
-            <label for="e9">対人プレッシャー</label>
-            <input type="checkbox" id="e10" name="emotion" value="[::フリーズ]">
-            <label for="e10">フリーズ</label>
-            <input type="checkbox" id="e11" name="emotion" value="[::吸収期]">
-            <label for="e11">吸収期</label>
-            <input type="checkbox" id="e12" name="emotion" value="[::心配]">
-            <label for="e12">心配</label>
+      <!-- 感情チェック -->
+      <div>
+        <span class="block text-sm font-medium text-gray-700">感情（複数選択可）</span>
+        <div class="mt-2 grid grid-cols-4 gap-2">
+          <div>
+            <input type="checkbox" id="e1" name="emotion" value="[||制作完了]" class="sr-only peer" />
+            <label for="e1" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              制作完了
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]" class="sr-only peer" />
+            <label for="e2" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              原点回帰
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e3" name="emotion" value="[||達成感]" class="sr-only peer" />
+            <label for="e3" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              達成感
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e4" name="emotion" value="[||感謝]" class="sr-only peer" />
+            <label for="e4" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              感謝
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e5" name="emotion" value="[||安心]" class="sr-only peer" />
+            <label for="e5" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              安心
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e6" name="emotion" value="[||過集中]" class="sr-only peer" />
+            <label for="e6" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              過集中
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e7" name="emotion" value="[::回避行動]" class="sr-only peer" />
+            <label for="e7" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              回避行動
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e8" name="emotion" value="[::罪悪感]" class="sr-only peer" />
+            <label for="e8" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              罪悪感
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e9" name="emotion" value="[::対人プレッシャー]" class="sr-only peer" />
+            <label for="e9" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              対人プレッシャー
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e10" name="emotion" value="[::フリーズ]" class="sr-only peer" />
+            <label for="e10" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              フリーズ
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e11" name="emotion" value="[::吸収期]" class="sr-only peer" />
+            <label for="e11" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              吸収期
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" id="e12" name="emotion" value="[::心配]" class="sr-only peer" />
+            <label for="e12" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
+              心配
+            </label>
           </div>
         </div>
+      </div>
 
-        <!-- 行動 -->
-        <div class="input_group">
-          <textarea id="action" class="input" name="action" rows="2" required></textarea>
-          <label class="input_label" for="action">
-            <span class="label_text">行動（実際にとった行動や態度）</span>
-          </label>
-        </div>
+      <!-- 行動 -->
+      <div>
+        <label for="action" class="block text-sm font-medium text-gray-700">
+          行動（実際にとった行動や態度）
+        </label>
+        <textarea
+          id="action"
+          name="action"
+          rows="2"
+          placeholder="行動を入力"
+          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        ></textarea>
+      </div>
 
-        <!-- 結果 -->
-        <div class="input_group">
-          <textarea id="result" class="input" name="result" rows="2" required></textarea>
-          <label class="input_label" for="result">
-            <span class="label_text">結果（行動によって起こった現実の反応）</span>
-          </label>
-        </div>
+      <!-- 結果 -->
+      <div>
+        <label for="result" class="block text-sm font-medium text-gray-700">
+          結果（行動によって起こった現実の反応）
+        </label>
+        <textarea
+          id="result"
+          name="result"
+          rows="2"
+          placeholder="結果を入力"
+          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        ></textarea>
+      </div>
 
-        <!-- リフレーミング -->
-        <div class="input_group">
-          <textarea id="reframe" class="input" name="reframe" rows="2" required></textarea>
-          <label class="input_label" for="reframe">
-            <span class="label_text">リフレーミング（他の見方があるとしたら？）</span>
-          </label>
-        </div>
+      <!-- リフレーミング -->
+      <div>
+        <label for="reframe" class="block text-sm font-medium text-gray-700">
+          リフレーミング（他の見方があるとしたら？）
+        </label>
+        <textarea
+          id="reframe"
+          name="reframe"
+          rows="2"
+          placeholder="リフレーミングを入力"
+          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        ></textarea>
+      </div>
 
-        <!-- 送信ボタン -->
-        <button type="submit" class="button button_wide">送信</button>
-
-      </form>
-    </div>
+      <!-- 送信 -->
+      <div class="text-right">
+        <button
+          type="submit"
+          class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+        >
+          送信
+        </button>
+      </div>
+    </form>
   </div>
 
   <script>
     document.getElementById('cbt-form').addEventListener('submit', function(e) {
       e.preventDefault();
       const now = new Date();
-      const date = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
-      const title = encodeURIComponent(`${date}：CBT`);
+      const date = \`\${now.getFullYear()}/\${String(now.getMonth()+1).padStart(2,'0')}/\${String(now.getDate()).padStart(2,'0')}\`;
+      const title = encodeURIComponent(\`\${date}：CBT\`);
       const project = 'creategames';
       const emotions = Array.from(this.querySelectorAll('input[name="emotion"]:checked'))
         .map(cb => cb.value).join(' ');
       const lines = [
-        `${date}：CBT`,
-        `#${date.slice(0,7)}`, '',
+        \`\${date}：CBT\`,
+        \`#\${date.slice(0,7)}\`, '',
         '[- 出来事]', this.elements.event.value, '',
         '[- 自動思考]', this.elements.thought.value, '',
         '[- 感情]', emotions, '',
@@ -108,7 +189,7 @@
         '[- リフレーミング]', this.elements.reframe.value, '',
         '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]'
       ];
-      window.location.href = `https://scrapbox.io/${project}/${title}?body=${encodeURIComponent(lines.join('\n'))}`;
+      window.location.href = \`https://scrapbox.io/\${project}/\${title}?body=\${encodeURIComponent(lines.join('\\n'))}\`;
     });
   </script>
 </body>

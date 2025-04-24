@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <!-- 既存の meta/title/style のあとに追加してください -->
+  <meta charset="UTF-8" />
+  <title>CBTログ入力</title>
   <style>
     /* 全体のベース */
     body {
@@ -20,7 +21,7 @@
       margin-top: 1.5em;
       font-weight: bold;
     }
-    textarea, input[type="text"], .emotion-group {
+    textarea, input[type="text"] {
       width: 100%;
       box-sizing: border-box;
       padding: 0.5em;
@@ -60,33 +61,41 @@
     }
   </style>
 </head>
-
 <body>
   <h1>CBTログ入力</h1>
   <form id="cbt-form">
-    <label>出来事<br>
-      <textarea name="event" placeholder="外部で起きた具体的な事象"></textarea>
-    </label>
+    <label>出来事（外部で起きた具体的な事象）</label>
+    <textarea name="event"></textarea>
 
-    <label>自動思考<br>
-      <textarea name="thought" placeholder="その瞬間に浮かんだ考え／言葉"></textarea>
-    </label>
+    <label>自動思考（その瞬間に浮かんだ考え／言葉）</label>
+    <textarea name="thought"></textarea>
 
-    <label>感情<br>
-      <input type="text" name="emotion" placeholder="[//罪悪感][//過集中]…">
-    </label>
+    <label>感情</label>
+    <div class="emotion-group">
+      <label><input type="checkbox" name="emotion" value="[//制作完了]">[//制作完了]</label>
+      <label><input type="checkbox" name="emotion" value="[//原点回帰]">[//原点回帰]</label>
+      <label><input type="checkbox" name="emotion" value="[//達成感]">[//達成感]</label>
+      <label><input type="checkbox" name="emotion" value="[//感謝]">[//感謝]</label>
 
-    <label>行動<br>
-      <textarea name="action" placeholder="実際にとった行動や態度"></textarea>
-    </label>
+      <label><input type="checkbox" name="emotion" value="[//安心]">[//安心]</label>
+      <label><input type="checkbox" name="emotion" value="[//過集中]">[//過集中]</label>
+      <label><input type="checkbox" name="emotion" value="[//回避行動]">[//回避行動]</label>
+      <label><input type="checkbox" name="emotion" value="[//罪悪感]">[//罪悪感]</label>
 
-    <label>結果<br>
-      <textarea name="result" placeholder="行動によって起こった現実の反応"></textarea>
-    </label>
+      <label><input type="checkbox" name="emotion" value="[//対人プレッシャー]">[//対人プレッシャー]</label>
+      <label><input type="checkbox" name="emotion" value="[//フリーズ]">[//フリーズ]</label>
+      <label><input type="checkbox" name="emotion" value="[//吸収期]">[//吸収期]</label>
+      <label><input type="checkbox" name="emotion" value="[//希望]">[//希望]</label>
+    </div>
 
-    <label>リフレーミング<br>
-      <textarea name="reframe" placeholder="他の見方・角度の解釈"></textarea>
-    </label>
+    <label>行動（実際にとった行動や態度）</label>
+    <textarea name="action"></textarea>
+
+    <label>結果（行動によって起こった現実の反応）</label>
+    <textarea name="result"></textarea>
+
+    <label>リフレーミング（他の見方があるとしたら？少し違う角度の解釈）</label>
+    <textarea name="reframe"></textarea>
 
     <button type="submit">送信して Scrapbox へ</button>
   </form>
@@ -101,9 +110,14 @@
       const date = `${Y}/${M}/${D}`;
       const title = encodeURIComponent(`${date}：CBT`);
       const monthTag = `#${Y}/${M}`;
-      
-      const get = (name) => encodeURIComponent(this.elements[name].value || '');
-      
+
+      // フォーム値を取得
+      const getVal = name => Array.from(
+        this.querySelectorAll(`[name="${name}"]:checked`).length
+          ? this.querySelectorAll(`[name="${name}"]:checked`)
+          : [ this.elements[name] ]
+      ).map(el => el.value).join(' ');
+
       const bodyLines = [
         `${date}：CBT`,
         monthTag,
@@ -115,27 +129,7 @@
         this.elements.thought.value,
         '',
         '[- 感情]',
-        this.elements.emotion.value,
+        getVal('emotion'),
         '',
         '[- 行動（実際にとった行動や態度）]',
-        this.elements.action.value,
-        '',
-        '[- 結果（行動によって起こった現実の反応）]',
-        this.elements.result.value,
-        '',
-        '[- リフレーミング（他の見方があるとしたら？少し違う角度の解釈）]',
-        this.elements.reframe.value,
-        '',
-        '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o 💬]'
-      ];
-      
-      const body = encodeURIComponent(bodyLines.join('\n'));
-      const project = 'creategames'; // ← Scrapboxプロジェクト名に置き換え
-      const url = `https://scrapbox.io/${project}/${title}?body=${body}`;
-      
-      // リダイレクト
-      window.location.href = url;
-    });
-  </script>
-</body>
-</html>
+        this.elements.action

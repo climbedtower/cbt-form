@@ -2,96 +2,127 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>scrapboxCBT</title>
-  <style>
-    /* リセット & ベース */
+  <title>scrapboxCBT</n  <style>
+    /* Base reset */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #f9f9f9;
-      color: #2f2f2f;
-      font-family: 'Open Sans', system-ui, sans-serif;
+      color: #333;
+      font-family: 'Open Sans', sans-serif;
       padding: 2rem;
     }
     @font-face {
-      font-family: 'Open Sans'; 
-      font-style: normal; 
+      font-family: 'Open Sans';
+      font-style: normal;
       font-weight: 400;
-      src: local('Open Sans'), local('OpenSans'),
-          url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff)
-          format('woff');
+      src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
     }
-    /* フォームレイアウト */
+
+    /* Form container */
     form {
-      width: 50%;
-      min-width: 9rem;
-      margin: 10% auto;
+      width: 50%; min-width: 16rem;
+      margin: 5% auto;
       background: #fff;
-      padding: 1.5rem;
-      border-radius: 0.3rem;
+      padding: 2rem;
+      border-radius: .3rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    /* テキストエリア */
-    textarea {
+
+    /* Floating label groups */
+    .group {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+    .group textarea {
       width: 100%;
-      margin: 0.5rem 0;
-      padding: 1rem;
+      padding: 1rem 0 0.5rem;
       border: none;
-      border-radius: 0.3rem;
-      background: #e5e5e5;
-      color: #333;
+      border-bottom: 1px solid #aaa;
+      background: transparent;
       font-size: 1.1em;
       line-height: 1.4;
       resize: vertical;
     }
-    textarea::placeholder {
+    .group textarea:focus { outline: none; }
+    .group label {
+      position: absolute;
+      top: 1rem;
+      left: 0;
+      font-size: 1.1em;
       color: #aaa;
-      font-size: 1em;
+      pointer-events: none;
+      transition: 0.2s ease all;
     }
-    /* 感情チェック (4×3 グリッド) */
-    .emotion-group {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem 0.125rem;
-      margin: 0.5rem 0;
+    .group textarea:focus ~ label, .group textarea:not(:placeholder-shown) ~ label {
+      top: -1rem;
+      font-size: .9em;
+      color: #84AD47;
     }
+    .group .bar {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+    .group .bar:before, .group .bar:after {
+      content: '';
+      height: 2px;
+      width: 0;
+      bottom: 0;
+      position: absolute;
+      background: #84AD47;
+      transition: 0.2s ease all;
+    }
+    .group .bar:before { left: 50%; }
+    .group .bar:after { right: 50%; }
+    .group textarea:focus ~ .bar:before, .group textarea:focus ~ .bar:after {
+      width: 50%;
+    }
+
+    /* Emotion checkboxes unchanged */
+    .emotion-group { display: grid; grid-template-columns: repeat(4,1fr); gap: .5rem .125rem; }
     .emotion-group input { display: none; }
     .emotion-group label {
-      display: block;
-      padding: 0.6rem;
+      padding: .6rem;
       border: 1px dashed #ccc;
-      border-radius: 0.3rem;
+      border-radius: .3rem;
       background: #fafafa;
-      color: #333;
-      font-size: 0.9em;
       text-align: center;
+      font-size: .9em;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
     }
     .emotion-group input:checked + label {
       background: #84AD47;
       border-color: #84AD47;
       color: #fff;
     }
-    /* 送信ボタン */
+
+    /* Submit button */
     button[type="submit"] {
       float: right;
+      margin-top: 1rem;
       background: #84AD47;
       color: #fff;
       border: none;
-      border-radius: 0.3rem;
-      padding: 0.75rem 1.5rem;
+      border-radius: .3rem;
+      padding: .75rem 1.5rem;
       font-size: 1em;
       cursor: pointer;
     }
-    button[type="submit"]:hover {
-      background: #6d8d3a;
-    }
+    button[type="submit"]:hover { background: #6d8d3a; }
   </style>
 </head>
 <body>
   <form id="cbt-form">
-    <textarea name="event" rows="3" placeholder="出来事（外部で起きた具体的な事象）"></textarea>
-    <textarea name="thought" rows="2" placeholder="自動思考（その瞬間に浮かんだ考え/言葉）"></textarea>
+    <div class="group">
+      <textarea name="event" rows="3" placeholder=" "></textarea>
+      <label>出来事（外部で起きた具体的な事象）</label>
+      <div class="bar"></div>
+    </div>
+    <div class="group">
+      <textarea name="thought" rows="2" placeholder=" "></textarea>
+      <label>自動思考（その瞬間に浮かんだ考え/言葉）</label>
+      <div class="bar"></div>
+    </div>
     <div class="emotion-group">
       <input type="checkbox" id="e1" name="emotion" value="[||制作完了]"><label for="e1">制作完了</label>
       <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]"><label for="e2">原点回帰</label>
@@ -106,33 +137,34 @@
       <input type="checkbox" id="e11" name="emotion" value="[::吸収期]"><label for="e11">吸収期</label>
       <input type="checkbox" id="e12" name="emotion" value="[::心配]"><label for="e12">心配</label>
     </div>
-    <textarea name="action" rows="2" placeholder="行動（実際にとった行動や態度）"></textarea>
-    <textarea name="result" rows="2" placeholder="結果（行動によって起こった現実の反応）"></textarea>
-    <textarea name="reframe" rows="2" placeholder="リフレーミング（他の見方があるとしたら？）"></textarea>
+    <div class="group">
+      <textarea name="action" rows="2" placeholder=" "></textarea>
+      <label>行動（実際にとった行動や態度）</label>
+      <div class="bar"></div>
+    </div>
+    <div class="group">
+      <textarea name="result" rows="2" placeholder=" "></textarea>
+      <label>結果（行動によって起こった現実の反応）</label>
+      <div class="bar"></div>
+    </div>
+    <div class="group">
+      <textarea name="reframe" rows="2" placeholder=" "></textarea>
+      <label>リフレーミング（他の見方があるとしたら？）</label>
+      <div class="bar"></div>
+    </div>
     <button type="submit">送信</button>
   </form>
   <script>
-    document.getElementById('cbt-form').addEventListener('submit', function(e) {
+    document.getElementById('cbt-form').addEventListener('submit',function(e){
       e.preventDefault();
-      const now = new Date();
-      const date = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
-      const title = encodeURIComponent(`${date}：CBT`);
-      const project = 'creategames';
-      const emotions = Array.from(this.querySelectorAll('input[name="emotion"]:checked'))
-        .map(cb => cb.value).join(' ');
-      const lines = [
-        `${date}：CBT`,
-        `#${date.slice(0,7)}`, '',
-        '[- 出来事]', this.elements.event.value, '',
-        '[- 自動思考]', this.elements.thought.value, '',
-        '[- 感情]', emotions, '',
-        '[- 行動]', this.elements.action.value, '',
-        '[- 結果]', this.elements.result.value, '',
-        '[- リフレーミング]', this.elements.reframe.value, '',
-        '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]'
-      ];
-      window.location.href = `https://scrapbox.io/${project}/${title}?body=${encodeURIComponent(lines.join('\n'))}`;
+      const now=new Date();const date=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+      const title=encodeURIComponent(`${date}：CBT`);
+      const project='creategames';
+      const emotions=Array.from(this.querySelectorAll('input[name="emotion"]:checked')).map(cb=>cb.value).join(' ');
+      const lines=[`${date}：CBT`,`#${date.slice(0,7)}`,'', '[- 出来事]', this.elements.event.value,'', '[- 自動思考]', this.elements.thought.value,'', '[- 感情]',emotions,'', '[- 行動]',this.elements.action.value,'', '[- 結果]',this.elements.result.value,'', '[- リフレーミング]',this.elements.reframe.value,'','#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]`];
+      window.location.href=`https://scrapbox.io/${project}/${title}?body=${encodeURIComponent(lines.join('\n'))}`;
     });
   </script>
 </body>
 </html>
+

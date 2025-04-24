@@ -4,89 +4,113 @@
   <meta charset="UTF-8">
   <title>scrapboxCBT</title>
   <style>
-    /* --- リセット＆ベース --- */
+    /* ==== リセット & ベース ==== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: system-ui, sans-serif;
-      max-width: 500px;
-      margin: 1em auto;
-      padding: 0 1em;
-      color: #333;
+      background: #f9f9f9;
+      color: #2f2f2f;
+      font-family: 'Open Sans', system-ui, sans-serif;
+      padding: 2rem;
     }
-    h3 {
-      text-align: center;
-      margin-bottom: 1em;
-      font-size: 1.5em;
-      font-weight: 500;
+    /* Google Fonts Open Sans */
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
     }
+
+    /* ==== フォームレイアウト ==== */
+    form {
+      width: 50%;
+      min-width: 9rem;
+      margin: 10% auto;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
     label {
       display: block;
-      margin: 1em 0 0.5em;
+      margin-top: 1rem;
       font-size: 0.95em;
       color: #555;
     }
+    .hint {
+      display: block;
+      font-size: 0.85em;
+      color: #aaa;
+      margin-top: 0.25em;
+    }
+
     textarea, input[type="text"] {
+      float: left;
       width: 100%;
-      padding: 0.5em;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      margin: 0.5rem 0;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.3rem;
+      background: #e5e5e5;
+      color: #555;
       font-size: 0.95em;
-      background: #fafafa;
       resize: vertical;
     }
-    /* --- 感情トグル --- */
+
+    /* ==== 感情チェックボックス (4×3グリッド) ==== */
     .emotion-group {
       display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 0.5em;
-      margin-top: 0.5em;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin-top: 0.5rem;
     }
     .emotion-group input {
       display: none;
     }
     .emotion-group label {
       font-size: 0.85em;
-      padding: 0.4em;
+      padding: 0.4rem;
       text-align: center;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 0.3rem;
+      background: #fafafa;
       cursor: pointer;
-      background: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       transition: background 0.2s, border-color 0.2s;
     }
     .emotion-group input:checked + label {
-      background: #007ACC;
-      border-color: #007ACC;
+      background: #84AD47; /* green */
+      border-color: #84AD47;
       color: #fff;
     }
-    /* --- 送信ボタン --- */
-    button {
-      width: 100%;
-      margin: 1.5em 0;
-      padding: 0.75em;
-      font-size: 1em;
+
+    /* ==== 送信ボタン ==== */
+    button[type="submit"] {
+      float: right;
+      background: #84AD47;
+      color: #fff;
       border: none;
-      border-radius: 4px;
-      background: #007ACC;
-      color: #fff;
+      border-radius: 0.3rem;
+      padding: 0.5rem 1rem;
+      font-size: 1em;
       cursor: pointer;
-      transition: background 0.2s;
     }
-    button:hover {
-      background: #005F99;
+    button[type="submit"]:hover {
+      background: #6d8d3a;
     }
   </style>
 </head>
 <body>
-  <h3>scrapboxCBT</h3>
   <form id="cbt-form">
-    <label>出来事</label>
+    <label>出来事<br><small class="hint">（外部で起きた具体的な事象）</small></label>
     <textarea name="event" rows="3"></textarea>
 
-    <label>自動思考</label>
+    <label>自動思考<br><small class="hint">（その瞬間に浮かんだ考え／言葉）</small></label>
     <textarea name="thought" rows="2"></textarea>
 
-    <label>感情</label>
+    <label>感情<br><small class="hint">（該当するものを複数選択）</small></label>
     <div class="emotion-group">
       <input type="checkbox" id="e1" name="emotion" value="[||制作完了]"><label for="e1">制作完了</label>
       <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]"><label for="e2">原点回帰</label>
@@ -97,4 +121,53 @@
       <input type="checkbox" id="e7" name="emotion" value="[::回避行動]"><label for="e7">回避行動</label>
       <input type="checkbox" id="e8" name="emotion" value="[::罪悪感]"><label for="e8">罪悪感</label>
       <input type="checkbox" id="e9" name="emotion" value="[::対人プレッシャー]"><label for="e9">対人プレッシャー</label>
-      <input type
+      <input type="checkbox" id="e10" name="emotion" value="[::フリーズ]"><label for="e10">フリーズ</label>
+      <input type="checkbox" id="e11" name="emotion" value="[::吸収期]"><label for="e11">吸収期</label>
+      <input type="checkbox" id="e12" name="emotion" value="[::心配]"><label for="e12">心配</label>
+    </div>
+
+    <label>行動<br><small class="hint">（実際にとった行動や態度）</small></label>
+    <textarea name="action" rows="2"></textarea>
+
+    <label>結果<br><small class="hint">（行動によって起こった現実の反応）</small></label>
+    <textarea name="result" rows="2"></textarea>
+
+    <label>リフレーミング<br><small class="hint">（他の見方があるとしたら？）</small></label>
+    <textarea name="reframe" rows="2"></textarea>
+
+    <button type="submit">送信</button>
+  </form>
+
+  <script>
+    document.getElementById('cbt-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const now = new Date();
+      const date = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+      const title = encodeURIComponent(`${date}：CBT`);
+      const project = 'creategames';
+
+      const emotions = Array.from(this.querySelectorAll('input[name="emotion"]:checked')).map(cb=>cb.value).join(' ');
+      const lines = [
+        `${date}：CBT`,
+        `#${date.slice(0,7)}`,
+        '',
+        '[- 出来事]', this.elements.event.value,
+        '',
+        '[- 自動思考]', this.elements.thought.value,
+        '',
+        '[- 感情]', emotions,
+        '',
+        '[- 行動]', this.elements.action.value,
+        '',
+        '[- 結果]', this.elements.result.value,
+        '',
+        '[- リフレーミング]', this.elements.reframe.value,
+        '',
+        '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]'
+      ];
+      window.location.href = `https://scrapbox.io/${project}/${title}?body=${encodeURIComponent(lines.join('\n'))}`;
+    });
+  </script>
+</body>
+</html>
+

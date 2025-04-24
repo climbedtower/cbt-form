@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>scrapboxCBT</n  <style>
+  <title>scrapboxCBT</title>
+  <style>
     /* Base reset */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -15,20 +16,23 @@
       font-family: 'Open Sans';
       font-style: normal;
       font-weight: 400;
-      src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+      src: local('Open Sans'), local('OpenSans'),
+          url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff)
+          format('woff');
     }
 
     /* Form container */
     form {
-      width: 50%; min-width: 16rem;
+      width: 50%;
+      min-width: 16rem;
       margin: 5% auto;
       background: #fff;
       padding: 2rem;
-      border-radius: .3rem;
+      border-radius: 0.3rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    /* Floating label groups */
+    /* Floating label group */
     .group {
       position: relative;
       margin-bottom: 2.5rem;
@@ -53,9 +57,10 @@
       pointer-events: none;
       transition: 0.2s ease all;
     }
-    .group textarea:focus ~ label, .group textarea:not(:placeholder-shown) ~ label {
+    .group textarea:focus ~ label,
+    .group textarea:not(:placeholder-shown) ~ label {
       top: -1rem;
-      font-size: .9em;
+      font-size: 0.9em;
       color: #84AD47;
     }
     .group .bar {
@@ -63,7 +68,8 @@
       display: block;
       width: 100%;
     }
-    .group .bar:before, .group .bar:after {
+    .group .bar:before,
+    .group .bar:after {
       content: '';
       height: 2px;
       width: 0;
@@ -73,22 +79,29 @@
       transition: 0.2s ease all;
     }
     .group .bar:before { left: 50%; }
-    .group .bar:after { right: 50%; }
-    .group textarea:focus ~ .bar:before, .group textarea:focus ~ .bar:after {
+    .group .bar:after  { right: 50%; }
+    .group textarea:focus ~ .bar:before,
+    .group textarea:focus ~ .bar:after {
       width: 50%;
     }
 
-    /* Emotion checkboxes unchanged */
-    .emotion-group { display: grid; grid-template-columns: repeat(4,1fr); gap: .5rem .125rem; }
+    /* Emotion checkboxes */
+    .emotion-group {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem 0.125rem;
+      margin: 0.5rem 0;
+    }
     .emotion-group input { display: none; }
     .emotion-group label {
-      padding: .6rem;
+      padding: 0.6rem;
       border: 1px dashed #ccc;
-      border-radius: .3rem;
+      border-radius: 0.3rem;
       background: #fafafa;
       text-align: center;
-      font-size: .9em;
+      font-size: 0.9em;
       cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
     }
     .emotion-group input:checked + label {
       background: #84AD47;
@@ -103,12 +116,14 @@
       background: #84AD47;
       color: #fff;
       border: none;
-      border-radius: .3rem;
-      padding: .75rem 1.5rem;
+      border-radius: 0.3rem;
+      padding: 0.75rem 1.5rem;
       font-size: 1em;
       cursor: pointer;
     }
-    button[type="submit"]:hover { background: #6d8d3a; }
+    button[type="submit"]:hover {
+      background: #6d8d3a;
+    }
   </style>
 </head>
 <body>
@@ -120,9 +135,10 @@
     </div>
     <div class="group">
       <textarea name="thought" rows="2" placeholder=" "></textarea>
-      <label>自動思考（その瞬間に浮かんだ考え/言葉）</label>
+      <label>自動思考（その瞬間に浮かんだ考え／言葉）</label>
       <div class="bar"></div>
     </div>
+
     <div class="emotion-group">
       <input type="checkbox" id="e1" name="emotion" value="[||制作完了]"><label for="e1">制作完了</label>
       <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]"><label for="e2">原点回帰</label>
@@ -137,6 +153,7 @@
       <input type="checkbox" id="e11" name="emotion" value="[::吸収期]"><label for="e11">吸収期</label>
       <input type="checkbox" id="e12" name="emotion" value="[::心配]"><label for="e12">心配</label>
     </div>
+
     <div class="group">
       <textarea name="action" rows="2" placeholder=" "></textarea>
       <label>行動（実際にとった行動や態度）</label>
@@ -152,19 +169,31 @@
       <label>リフレーミング（他の見方があるとしたら？）</label>
       <div class="bar"></div>
     </div>
+
     <button type="submit">送信</button>
   </form>
+
   <script>
-    document.getElementById('cbt-form').addEventListener('submit',function(e){
+    document.getElementById('cbt-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      const now=new Date();const date=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
-      const title=encodeURIComponent(`${date}：CBT`);
-      const project='creategames';
-      const emotions=Array.from(this.querySelectorAll('input[name="emotion"]:checked')).map(cb=>cb.value).join(' ');
-      const lines=[`${date}：CBT`,`#${date.slice(0,7)}`,'', '[- 出来事]', this.elements.event.value,'', '[- 自動思考]', this.elements.thought.value,'', '[- 感情]',emotions,'', '[- 行動]',this.elements.action.value,'', '[- 結果]',this.elements.result.value,'', '[- リフレーミング]',this.elements.reframe.value,'','#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]`];
-      window.location.href=`https://scrapbox.io/${project}/${title}?body=${encodeURIComponent(lines.join('\n'))}`;
+      const now = new Date();
+      const date = \`\${now.getFullYear()}/\${String(now.getMonth()+1).padStart(2,'0')}/\${String(now.getDate()).padStart(2,'0')}\`;
+      const title = encodeURIComponent(\`\${date}：CBT\`);
+      const project = 'creategames';
+      const emotions = Array.from(this.querySelectorAll('input[name="emotion"]:checked'))
+        .map(cb => cb.value).join(' ');
+      const lines = [
+        \`\${date}：CBT\`,
+        \`#\${date.slice(0,7)}\`, '', '[- 出来事]', this.elements.event.value,
+        '', '[- 自動思考]', this.elements.thought.value,
+        '', '[- 感情]', emotions,
+        '', '[- 行動]', this.elements.action.value,
+        '', '[- 結果]', this.elements.result.value,
+        '', '[- リフレーミング]', this.elements.reframe.value,
+        '', '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]'
+      ];
+      window.location.href = \`https://scrapbox.io/\${project}/\${title}?body=\${encodeURIComponent(lines.join('\\n'))}\`;
     });
   </script>
 </body>
 </html>
-

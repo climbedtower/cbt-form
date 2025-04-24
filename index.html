@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>scrapboxCBT</title>
   <style>
-    /* ——— ベーススタイル ——— */
+    /* --- リセット＆ベース --- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: sans-serif;
-      max-width: 600px;
-      margin: 2em auto;
+      font-family: system-ui, sans-serif;
+      max-width: 500px;
+      margin: 1em auto;
       padding: 0 1em;
-      background: #fafafa;
       color: #333;
     }
     h3 {
       text-align: center;
-      margin-bottom: 1.5em;
-      font-size: 1.6em;
+      margin-bottom: 1em;
+      font-size: 1.5em;
+      font-weight: 500;
     }
-    form label {
+    label {
       display: block;
-      margin-top: 1.5em;
-      font-weight: bold;
+      margin: 1em 0 0.5em;
+      font-size: 0.95em;
       color: #555;
     }
     textarea, input[type="text"] {
       width: 100%;
-      box-sizing: border-box;
       padding: 0.5em;
-      font-size: 1em;
       border: 1px solid #ddd;
       border-radius: 4px;
-      background: #fff;
+      font-size: 0.95em;
+      background: #fafafa;
+      resize: vertical;
     }
-    /* ——— 感情チェックボックス群 ——— */
+    /* --- 感情トグル --- */
     .emotion-group {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4,1fr);
       gap: 0.5em;
       margin-top: 0.5em;
     }
@@ -44,33 +45,32 @@
       display: none;
     }
     .emotion-group label {
-      cursor: pointer;
-      user-select: none;
-      font-size: 0.9em;
-      padding: 0.4em 0.8em;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      background: #f5f5f5;
-      color: #555;
+      font-size: 0.85em;
+      padding: 0.4em;
       text-align: center;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #fff;
+      transition: background 0.2s, border-color 0.2s;
     }
     .emotion-group input:checked + label {
       background: #007ACC;
-      color: #fff;
       border-color: #007ACC;
+      color: #fff;
     }
-    /* ——— 送信ボタン ——— */
+    /* --- 送信ボタン --- */
     button {
-      margin-top: 2em;
-      padding: 0.75em 1.5em;
+      width: 100%;
+      margin: 1.5em 0;
+      padding: 0.75em;
       font-size: 1em;
       border: none;
       border-radius: 4px;
       background: #007ACC;
       color: #fff;
       cursor: pointer;
-      width: 100%;
+      transition: background 0.2s;
     }
     button:hover {
       background: #005F99;
@@ -80,85 +80,21 @@
 <body>
   <h3>scrapboxCBT</h3>
   <form id="cbt-form">
-    <label>出来事（外部で起きた具体的な事象）</label>
-    <textarea name="event"></textarea>
+    <label>出来事</label>
+    <textarea name="event" rows="3"></textarea>
 
-    <label>自動思考（その瞬間に浮かんだ考え／言葉）</label>
-    <textarea name="thought"></textarea>
+    <label>自動思考</label>
+    <textarea name="thought" rows="2"></textarea>
 
-    <label>感情（[認知]の出力）</label>
+    <label>感情</label>
     <div class="emotion-group">
-      <input type="checkbox" id="e1" name="emotion" value="[||制作完了]"><label for="e1">[||制作完了]</label>
-      <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]"><label for="e2">[||原点回帰]</label>
-      <input type="checkbox" id="e3" name="emotion" value="[||達成感]"><label for="e3">[||達成感]</label>
-      <input type="checkbox" id="e4" name="emotion" value="[||感謝]"><label for="e4">[||感謝]</label>
-      <input type="checkbox" id="e5" name="emotion" value="[||安心]"><label for="e5">[||安心]</label>
-      <input type="checkbox" id="e6" name="emotion" value="[||過集中]"><label for="e6">[||過集中]</label>
-      <input type="checkbox" id="e7" name="emotion" value="[::回避行動]"><label for="e7">[::回避行動]</label>
-      <input type="checkbox" id="e8" name="emotion" value="[::罪悪感]"><label for="e8">[::罪悪感]</label>
-      <input type="checkbox" id="e9" name="emotion" value="[::対人プレッシャー]"><label for="e9">[::対人プレッシャー]</label>
-      <input type="checkbox" id="e10" name="emotion" value="[::フリーズ]"><label for="e10">[::フリーズ]</label>
-      <input type="checkbox" id="e11" name="emotion" value="[::吸収期]"><label for="e11">[::吸収期]</label>
-      <input type="checkbox" id="e12" name="emotion" value="[::心配]"><label for="e12">[::心配]</label>
-    </div>
-
-    <label>行動（実際にとった行動や態度）</label>
-    <textarea name="action"></textarea>
-
-    <label>結果（行動によって起こった現実の反応）</label>
-    <textarea name="result"></textarea>
-
-    <label>リフレーミング（他の見方があるとしたら？少し違う角度の解釈）</label>
-    <textarea name="reframe"></textarea>
-
-    <button type="submit">送信</button>
-  </form>
-
-  <script>
-    document.getElementById('cbt-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const now = new Date();
-      const Y = now.getFullYear();
-      const M = String(now.getMonth()+1).padStart(2,'0');
-      const D = String(now.getDate()).padStart(2,'0');
-      const date = `${Y}/${M}/${D}`;
-      const title = encodeURIComponent(`${date}：CBT`);
-      const monthTag = `#${Y}/${M}`;
-
-      // 感情の値をスペース区切りで取得
-      const emotions = Array.from(this.querySelectorAll('input[name="emotion"]:checked'))
-        .map(cb => cb.value).join(' ');
-
-      const lines = [
-        `${date}：CBT`,
-        monthTag,
-        '',
-        '[- 出来事（外部で起きた具体的な事象）]',
-        this.elements.event.value,
-        '',
-        '[- 自動思考（その瞬間に浮かんだ考え／言葉）]',
-        this.elements.thought.value,
-        '',
-        '[- 感情（[認知]の出力）]',
-        emotions,
-        '',
-        '[- 行動（実際にとった行動や態度）]',
-        this.elements.action.value,
-        '',
-        '[- 結果（行動によって起こった現実の反応）]',
-        this.elements.result.value,
-        '',
-        '[- リフレーミング（他の見方があるとしたら？少し違う角度の解釈）]',
-        this.elements.reframe.value,
-        '',
-        '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o 💬]'
-      ];
-
-      const body = encodeURIComponent(lines.join('\n'));
-      const project = 'creategames';
-      const url = `https://scrapbox.io/${project}/${title}?body=${body}`;
-      window.location.href = url;
-    });
-  </script>
-</body>
-</html>
+      <input type="checkbox" id="e1" name="emotion" value="[||制作完了]"><label for="e1">制作完了</label>
+      <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]"><label for="e2">原点回帰</label>
+      <input type="checkbox" id="e3" name="emotion" value="[||達成感]"><label for="e3">達成感</label>
+      <input type="checkbox" id="e4" name="emotion" value="[||感謝]"><label for="e4">感謝</label>
+      <input type="checkbox" id="e5" name="emotion" value="[||安心]"><label for="e5">安心</label>
+      <input type="checkbox" id="e6" name="emotion" value="[||過集中]"><label for="e6">過集中</label>
+      <input type="checkbox" id="e7" name="emotion" value="[::回避行動]"><label for="e7">回避行動</label>
+      <input type="checkbox" id="e8" name="emotion" value="[::罪悪感]"><label for="e8">罪悪感</label>
+      <input type="checkbox" id="e9" name="emotion" value="[::対人プレッシャー]"><label for="e9">対人プレッシャー</label>
+      <input type

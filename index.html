@@ -11,13 +11,13 @@
       <!-- 出来事 -->
       <div>
         <label for="event" class="block text-sm font-medium text-gray-700">
-          
+          出来事（外部で起きた具体的な事象）
         </label>
         <textarea
           id="event"
           name="event"
           rows="3"
-          placeholder="出来事（外部で起きた具体的な事象）"
+          placeholder="出来事を入力"
           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
         ></textarea>
       </div>
@@ -25,13 +25,13 @@
       <!-- 自動思考 -->
       <div>
         <label for="thought" class="block text-sm font-medium text-gray-700">
-          
+          自動思考（その瞬間に浮かんだ考え／言葉）
         </label>
         <textarea
           id="thought"
           name="thought"
           rows="2"
-          placeholder="自動思考（その瞬間に浮かんだ考え／言葉）"
+          placeholder="自動思考を入力"
           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
         ></textarea>
       </div>
@@ -46,6 +46,7 @@
               制作完了
             </label>
           </div>
+          <!-- 以下同様に e2～e12 -->
           <div>
             <input type="checkbox" id="e2" name="emotion" value="[||原点回帰]" class="sr-only peer" />
             <label for="e2" class="block text-center py-2 text-sm rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white">
@@ -118,13 +119,13 @@
       <!-- 行動 -->
       <div>
         <label for="action" class="block text-sm font-medium text-gray-700">
-          
+          行動（実際にとった行動や態度）
         </label>
         <textarea
           id="action"
           name="action"
           rows="2"
-          placeholder="行動（実際にとった行動や態度）"
+          placeholder="行動を入力"
           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
         ></textarea>
       </div>
@@ -138,7 +139,7 @@
           id="result"
           name="result"
           rows="2"
-          placeholder=" 結果（行動によって起こった現実の反応）"
+          placeholder="結果を入力"
           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
         ></textarea>
       </div>
@@ -146,13 +147,13 @@
       <!-- リフレーミング -->
       <div>
         <label for="reframe" class="block text-sm font-medium text-gray-700">
-          
+          リフレーミング（他の見方があるとしたら？）
         </label>
         <textarea
           id="reframe"
           name="reframe"
           rows="2"
-          placeholder="リフレーミング（他の見方があるとしたら？）"
+          placeholder="リフレーミングを入力"
           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
         ></textarea>
       </div>
@@ -172,24 +173,39 @@
   <script>
     document.getElementById('cbt-form').addEventListener('submit', function(e) {
       e.preventDefault();
+
+      // 日付を YYYY/MM/DD 形式で取得
       const now = new Date();
-      const date = \`\${now.getFullYear()}/\${String(now.getMonth()+1).padStart(2,'0')}/\${String(now.getDate()).padStart(2,'0')}\`;
-      const title = encodeURIComponent(\`\${date}：CBT\`);
-      const project = 'creategames';
-      const emotions = Array.from(this.querySelectorAll('input[name="emotion"]:checked'))
-        .map(cb => cb.value).join(' ');
-      const lines = [
-        \`\${date}：CBT\`,
-        \`#\${date.slice(0,7)}\`, '',
-        '[- 出来事]', this.elements.event.value, '',
-        '[- 自動思考]', this.elements.thought.value, '',
-        '[- 感情]', emotions, '',
-        '[- 行動]', this.elements.action.value, '',
-        '[- 結果]', this.elements.result.value, '',
-        '[- リフレーミング]', this.elements.reframe.value, '',
+      const YYYY = now.getFullYear();
+      const MM = String(now.getMonth() + 1).padStart(2, '0');
+      const DD = String(now.getDate()).padStart(2, '0');
+      const date = `${YYYY}/${MM}/${DD}`;
+
+      // Scrapbox 用 URL 構築
+      const title    = encodeURIComponent(`${date}：CBT`);
+      const project  = 'creategames';
+      const bodyLines = [
+        `${date}：CBT`,
+        `#${date.slice(0,7)}`,
+        '',
+        '[- 出来事]',  this.elements.event.value,
+        '',
+        '[- 自動思考]', this.elements.thought.value,
+        '',
+        '[- 感情]',     Array.from(this.querySelectorAll('input[name="emotion"]:checked')).map(cb=>cb.value).join(' '),
+        '',
+        '[- 行動]',    this.elements.action.value,
+        '',
+        '[- 結果]',    this.elements.result.value,
+        '',
+        '[- リフレーミング]', this.elements.reframe.value,
+        '',
         '#認知行動療法（CBT） [https://chatgpt.com/c/68095f61-f448-800f-ad49-02eb955c197c?model=gpt-4o]'
       ];
-      window.location.href = \`https://scrapbox.io/\${project}/\${title}?body=\${encodeURIComponent(lines.join('\\n'))}\`;
+      const body = encodeURIComponent(bodyLines.join('\n'));
+
+      // 新しいタブで Scrapbox を開く
+      window.open(`https://scrapbox.io/${project}/${title}?body=${body}`, '_blank');
     });
   </script>
 </body>
